@@ -5,17 +5,16 @@ import type {
 import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../server/auth";
-import { useRouter } from "next/router";
 
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { error } = useRouter().query;
+  // const { error } = useRouter().query;
 
   return (
     <>
-      {error && <p className="text-red-500">Error: {error}</p>}
-
+      {/* {error && <p className="text-red-500">Error: {error}</p>} */}
+      something
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button onClick={() => signIn(provider.id)}>
