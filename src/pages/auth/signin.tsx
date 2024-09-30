@@ -14,7 +14,9 @@ export default function SignIn({
   return (
     <>
       {/* {error && <p className="text-red-500">Error: {error}</p>} */}
-      something
+      <div>-----</div>
+      <button onClick={() => signIn("google")}>Sign in with Google</button>
+      <div>=====</div>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button onClick={() => signIn(provider.id)}>
