@@ -1,4 +1,4 @@
-import { getProviders, signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 
 import { api } from "@/utils/api";
@@ -66,9 +66,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: "/auth/signin" } };
   }
 
-  const providers = await getProviders();
-
   return {
-    props: { providers: providers ?? [] },
+    props: {},
   };
 }

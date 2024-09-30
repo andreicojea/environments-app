@@ -1,14 +1,9 @@
-import type {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next";
-import { getProviders, signIn } from "next-auth/react";
+import type { GetServerSidePropsContext } from "next";
+import { signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../../server/auth";
 
-export default function SignIn({
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function SignIn() {
   // const { error } = useRouter().query;
 
   return (
@@ -17,13 +12,6 @@ export default function SignIn({
       <div>-----</div>
       <button onClick={() => signIn("google")}>Sign in with Google</button>
       <div>=====</div>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
-          </button>
-        </div>
-      ))}
     </>
   );
 }
@@ -38,9 +26,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: "/" } };
   }
 
-  const providers = await getProviders();
-
   return {
-    props: { providers: providers ?? [] },
+    props: {},
   };
 }
