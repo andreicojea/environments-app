@@ -12,8 +12,11 @@ import { api } from "@/utils/api";
 import { UserAvatar } from "./user-avatar";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export function EnvironmentsTable() {
+  const [search, setSearch] = useState("");
+
   const {
     data: environments,
     error,
@@ -30,7 +33,12 @@ export function EnvironmentsTable() {
   return (
     <>
       <div>
-        <Input placeholder="Search" className="w-[300px]" />
+        <Input
+          placeholder="Search"
+          className="w-[300px]"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
       </div>
       <Table className="w-full">
         <TableHeader>
@@ -41,9 +49,18 @@ export function EnvironmentsTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {environments.map((env) => (
-            <EnvironmentRow key={env.id} env={env} />
-          ))}
+          {environments
+            .filter((env) => {
+              if (!search) {
+                return true;
+              }
+              return env.name
+                .toLowerCase()
+                .includes(search.trim().toLowerCase());
+            })
+            .map((env) => (
+              <EnvironmentRow key={env.id} env={env} />
+            ))}
         </TableBody>
       </Table>
     </>
