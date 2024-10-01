@@ -8,9 +8,25 @@ import {
 } from "@/components/ui/table";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { api } from "@/utils/api";
 import { UserAvatar } from "./user-avatar";
+import { toast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 export function EnvironmentsTable() {
+  const {
+    data: environments,
+    error,
+    status,
+  } = api.post.getEnvironments.useQuery();
+
+  if (error) {
+    return <span>Error: {error.message}</span>;
+  }
+  if (status === "pending") {
+    return <span>Loading...</span>;
+  }
+
   return (
     <>
       <div>
@@ -21,46 +37,106 @@ export function EnvironmentsTable() {
           <TableRow>
             <TableHead className="w-[300px]">Name</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="w-[100px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">Development-1</TableCell>
-            <TableCell>
-              <div className="focus:ring-ring text-foreground inline-flex items-center rounded-md border border-rose-700 bg-rose-100 px-2.5 py-0.5 text-xs font-semibold text-rose-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2">
-                Available
-              </div>
-            </TableCell>
-            <TableCell className="text-right">
-              <Button>Reserve</Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Parallel-Production</TableCell>
-            <TableCell>
-              <div className="focus:ring-ring text-foreground inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2">
-                Reserved
-              </div>
-            </TableCell>
-            <TableCell className="text-right">
-              <Button>Reserve</Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell className="font-medium">Parallel-Production-1</TableCell>
-            <TableCell>
-              <div className="flex items-center">
-                <UserAvatar name="John Snow"></UserAvatar>
-                <div className="ml-2">Reserved by John Snow, 5 mins ago</div>
-              </div>
-            </TableCell>
-            <TableCell className="text-right">
-              <Button>Reserve</Button>
-            </TableCell>
-          </TableRow>
+          {environments.map((env) => (
+            <EnvironmentRow key={env.id} env={env} />
+          ))}
         </TableBody>
       </Table>
     </>
+  );
+}
+
+export type Environment = {
+  id: number;
+  name: string;
+  slug: string;
+  reservedBy: {
+    id: string;
+    name: string | null;
+    image: string | null;
+  } | null;
+};
+
+function EnvironmentRow({ env }: { env: Environment }) {
+  const utils = api.useUtils();
+
+  const reserve = api.post.reserve.useMutation({
+    onSuccess: async () => {
+      await utils.post.getEnvironments.invalidate();
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Failed to update",
+        description: "Something went wrong...",
+      });
+    },
+  });
+
+  const release = api.post.release.useMutation({
+    onSuccess: async () => {
+      await utils.post.getEnvironments.invalidate();
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Failed to update",
+        description: "Something went wrong...",
+      });
+    },
+  });
+
+  return (
+    <TableRow>
+      <TableCell className="font-medium">{env.name}</TableCell>
+      {env.reservedBy ? (
+        <>
+          <TableCell>
+            <div className="flex items-center">
+              <UserAvatar
+                name={env.reservedBy.name!}
+                image={env.reservedBy.image!}
+              />
+              <div className="ml-2">Reserved by {env.reservedBy.name}</div>
+            </div>
+          </TableCell>
+          <TableCell className="text-right">
+            <Button
+              className="w-full"
+              onClick={() => release.mutate(env.id)}
+              disabled={release.isPending}
+            >
+              {release.isPending ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                "Done"
+              )}
+            </Button>
+          </TableCell>
+        </>
+      ) : (
+        <>
+          <TableCell>Available</TableCell>
+          <TableCell className="text-right">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => reserve.mutate(env.id)}
+              disabled={reserve.isPending}
+            >
+              {reserve.isPending ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                "Reserve"
+              )}
+            </Button>
+          </TableCell>
+        </>
+      )}
+    </TableRow>
   );
 }

@@ -11,6 +11,7 @@ import { UserNav } from "@/components/user-nav";
 import { EnvironmentsTable } from "@/components/environments-table";
 
 import Image from "next/image";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
@@ -47,6 +48,8 @@ export default function Home() {
           <EnvironmentsTable />
         </div>
       </div>
+
+      <Toaster />
 
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">

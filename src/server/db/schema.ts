@@ -40,6 +40,24 @@ export const posts = createTable(
   }),
 );
 
+export const environments = createTable("environment", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug", { length: 256 }).unique().notNull(),
+  name: varchar("name", { length: 256 }).notNull(),
+  reservedById: varchar("reserved_by", { length: 255 }).references(
+    () => users.id,
+  ),
+  createdById: varchar("created_by", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
 export const users = createTable("user", {
   id: varchar("id", { length: 255 })
     .notNull()
