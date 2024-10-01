@@ -45,7 +45,7 @@ export function EnvironmentsTable() {
           <TableRow>
             <TableHead className="w-[300px]">Name</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="w-[100px]"></TableHead>
+            <TableHead className="w-[121px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

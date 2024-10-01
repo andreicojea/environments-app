@@ -27,7 +27,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="mx-auto w-10/12 max-w-[1200px] flex-1 space-y-4 p-8 pt-6">
           <EnvironmentsTable />
         </div>
       </div>
