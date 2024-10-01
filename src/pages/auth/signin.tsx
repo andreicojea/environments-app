@@ -12,19 +12,10 @@ import {
 } from "@/components/ui/card";
 import { Icons } from "@/components/ui/icons";
 import Image from "next/image";
-import Head from "next/head";
 
 export default function SignIn() {
   return (
     <>
-      <Head>
-        <title>Environments App</title>
-        <meta
-          name="description"
-          content="Frictionless deployment for lower environments at Mosaic"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className="flex h-screen items-center justify-center bg-gray-100">
         <Card className="w-[350px]">
           <CardHeader>
