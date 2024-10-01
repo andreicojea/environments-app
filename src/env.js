@@ -24,6 +24,8 @@ export const env = createEnv({
     ),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
+    BITBUCKET_CLIENT_ID: z.string(),
+    BITBUCKET_CLIENT_SECRET: z.string(),
     API_KEY_SECRET: z.string(),
   },
 
@@ -47,6 +49,8 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    BITBUCKET_CLIENT_ID: process.env.BITBUCKET_CLIENT_ID,
+    BITBUCKET_CLIENT_SECRET: process.env.BITBUCKET_CLIENT_SECRET,
     API_KEY_SECRET: process.env.API_KEY_SECRET,
   },
   /**

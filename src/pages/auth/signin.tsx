@@ -45,9 +45,13 @@ export default function SignIn() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button className="w-full" onClick={() => signIn("google")}>
+            {/* <Button className="w-full" onClick={() => signIn("google")}>
               <Icons.google className="mr-2 size-4" />
               Sign in with Google
+            </Button> */}
+            <Button className="w-full" onClick={() => signIn("bitbucket")}>
+              <Icons.bitbucket className="mr-2 size-4" />
+              Sign in with Bitbucket
             </Button>
           </CardFooter>
         </Card>
