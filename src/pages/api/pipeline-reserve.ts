@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "@/server/db";
-import { environments, users } from "@/server/db/schema";
+import { accounts, environments } from "@/server/db/schema";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +20,7 @@ export default async function handler(
 
   const payloadSchema = z.object({
     environment: z.string().min(1),
-    userEmail: z.string().email(),
+    bitbucketUserId: z.string().min(1),
   });
 
   const parsed = payloadSchema.safeParse(req.body);
@@ -31,12 +31,12 @@ export default async function handler(
 
   const payload = parsed.data!;
 
-  const foundUser = await db.query.users.findFirst({
-    where: eq(users.email, payload.userEmail),
+  const foundAccount = await db.query.accounts.findFirst({
+    where: eq(accounts.providerAccountId, payload.bitbucketUserId),
   });
 
-  if (!foundUser) {
-    return res.status(404).json({ message: "User not found." });
+  if (!foundAccount) {
+    return res.status(404).json({ message: "Account not found." });
   }
 
   const foundEnvironment = await db.query.environments.findFirst({
@@ -48,7 +48,7 @@ export default async function handler(
   }
 
   if (foundEnvironment.reservedById) {
-    return foundEnvironment.reservedById === foundUser.id
+    return foundEnvironment.reservedById === foundAccount.userId
       ? res.status(200).json({ message: "Already reserved." })
       : res.status(403).json({ message: "Reserved by someone else." });
   }
@@ -56,7 +56,7 @@ export default async function handler(
   await db
     .update(environments)
     .set({
-      reservedById: foundUser.id,
+      reservedById: foundAccount.userId,
     })
     .where(eq(environments.id, foundEnvironment.id));
 

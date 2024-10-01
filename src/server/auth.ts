@@ -131,12 +131,10 @@ export const authOptions: NextAuthOptions = {
               },
             })
             .then((r) => {
-              console.log(r.data);
               return r.data;
             }),
       },
       async profile(profile: BitbucketProfile, tokens) {
-        console.log(profile);
         const email = await axios
           .get<BitbucketEmailsResponse>(
             "https://api.bitbucket.org/2.0/user/emails",
@@ -152,13 +150,6 @@ export const authOptions: NextAuthOptions = {
             return (r.data.values.find((value) => value.is_primary) ??
               r.data.values[0])!.email;
           });
-
-        console.log({
-          id: profile.account_id,
-          email,
-          image: profile.links.avatar.href,
-          name: profile.display_name,
-        });
 
         return {
           id: profile.uuid,
