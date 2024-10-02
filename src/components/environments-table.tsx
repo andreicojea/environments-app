@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { api } from "@/utils/api";
 import { UserAvatar } from "./user-avatar";
 import { toast } from "@/hooks/use-toast";
-import { Clock, Loader2 } from "lucide-react";
+import { Calendar, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
 import ReactTimeAgo from "react-time-ago";
@@ -135,7 +135,7 @@ function EnvironmentRow({ env }: { env: Environment }) {
           <TableCell>
             {env.updatedAt && env.reservedBy && (
               <div className="flex items-center">
-                <Clock className="mr-2 h-4 w-4" />
+                <Calendar className="mr-2 h-4 w-4" />
                 <ReactTimeAgo date={env.updatedAt} timeStyle="short" />
               </div>
             )}
@@ -186,7 +186,7 @@ function EnvironmentRowSkeleton() {
       </TableCell>
       <TableCell>
         <div className="flex items-center">
-          <Skeleton className="mr-2 h-8 w-8 rounded-2xl" />
+          <Skeleton className="mr-2 h-8 w-8 rounded-full" />
           <Skeleton className="h-4 w-[150px]" />
         </div>
       </TableCell>
