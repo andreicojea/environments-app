@@ -51,7 +51,7 @@ export function EnvironmentsTable() {
         </TableHeader>
         <TableBody>
           {status === "pending" &&
-            [1, 2, 3, 4, 5].map((_, index) => (
+            [1, 2, 3, 4].map((_, index) => (
               <EnvironmentRowSkeleton key={index} />
             ))}
           {status === "success" &&
