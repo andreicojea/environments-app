@@ -13,6 +13,7 @@ import { UserAvatar } from "./user-avatar";
 import { toast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { Skeleton } from "./ui/skeleton";
 
 export function EnvironmentsTable() {
   const [search, setSearch] = useState("");
@@ -26,9 +27,9 @@ export function EnvironmentsTable() {
   if (error) {
     return <span>Error: {error.message}</span>;
   }
-  if (status === "pending") {
-    return <span>Loading...</span>;
-  }
+  // if (status === "pending") {
+  //   return <span>Loading...</span>;
+  // }
 
   return (
     <>
@@ -49,18 +50,21 @@ export function EnvironmentsTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {environments
-            .filter((env) => {
-              if (!search) {
-                return true;
-              }
-              return env.name
-                .toLowerCase()
-                .includes(search.trim().toLowerCase());
-            })
-            .map((env) => (
-              <EnvironmentRow key={env.id} env={env} />
+          {status === "pending" &&
+            [1, 2, 3, 4, 5].map((_, index) => (
+              <EnvironmentRowSkeleton key={index} />
             ))}
+          {status === "success" &&
+            environments
+              .filter((env) => {
+                if (!search) {
+                  return true;
+                }
+                return env.name
+                  .toLowerCase()
+                  .includes(search.trim().toLowerCase());
+              })
+              .map((env) => <EnvironmentRow key={env.id} env={env} />)}
         </TableBody>
       </Table>
     </>
@@ -154,6 +158,25 @@ function EnvironmentRow({ env }: { env: Environment }) {
           </TableCell>
         </>
       )}
+    </TableRow>
+  );
+}
+
+function EnvironmentRowSkeleton() {
+  return (
+    <TableRow>
+      <TableCell className="font-medium">
+        <Skeleton className="h-4 w-[250px]" />
+      </TableCell>
+      <TableCell>
+        <div className="flex items-center">
+          <Skeleton className="mr-2 h-8 w-8 rounded-2xl" />
+          <Skeleton className="h-4 w-[250px]" />
+        </div>
+      </TableCell>
+      <TableCell className="text-right">
+        <Skeleton className="h-[40px] w-full" />
+      </TableCell>
     </TableRow>
   );
 }
