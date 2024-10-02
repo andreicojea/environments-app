@@ -166,12 +166,12 @@ function EnvironmentRowSkeleton() {
   return (
     <TableRow>
       <TableCell className="font-medium">
-        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[150px]" />
       </TableCell>
       <TableCell>
         <div className="flex items-center">
           <Skeleton className="mr-2 h-8 w-8 rounded-2xl" />
-          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[150px]" />
         </div>
       </TableCell>
       <TableCell className="text-right">
