@@ -37,6 +37,7 @@ export const postRouter = createTRPCRouter({
           name: users.name,
           image: users.image,
         },
+        updatedAt: environments.updatedAt,
       })
       .from(environments)
       .leftJoin(users, eq(users.id, environments.reservedById))

@@ -11,9 +11,14 @@ import { Button } from "./ui/button";
 import { api } from "@/utils/api";
 import { UserAvatar } from "./user-avatar";
 import { toast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Clock, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Skeleton } from "./ui/skeleton";
+import ReactTimeAgo from "react-time-ago";
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+TimeAgo.addDefaultLocale(en);
 
 export function EnvironmentsTable() {
   const [search, setSearch] = useState("");
@@ -46,6 +51,7 @@ export function EnvironmentsTable() {
           <TableRow>
             <TableHead className="w-[300px]">Name</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead></TableHead>
             <TableHead className="w-[121px]"></TableHead>
           </TableRow>
         </TableHeader>
@@ -80,6 +86,7 @@ export type Environment = {
     name: string | null;
     image: string | null;
   } | null;
+  updatedAt: Date | null;
 };
 
 function EnvironmentRow({ env }: { env: Environment }) {
@@ -125,6 +132,14 @@ function EnvironmentRow({ env }: { env: Environment }) {
               <div className="ml-2">Reserved by {env.reservedBy.name}</div>
             </div>
           </TableCell>
+          <TableCell>
+            {env.updatedAt && env.reservedBy && (
+              <div className="flex items-center">
+                <Clock className="mr-2 h-4 w-4" />
+                <ReactTimeAgo date={env.updatedAt} timeStyle="short" />
+              </div>
+            )}
+          </TableCell>
           <TableCell className="text-right">
             <Button
               className="w-full"
@@ -142,6 +157,7 @@ function EnvironmentRow({ env }: { env: Environment }) {
       ) : (
         <>
           <TableCell>Available</TableCell>
+          <TableCell></TableCell>
           <TableCell className="text-right">
             <Button
               variant="outline"
@@ -173,6 +189,9 @@ function EnvironmentRowSkeleton() {
           <Skeleton className="mr-2 h-8 w-8 rounded-2xl" />
           <Skeleton className="h-4 w-[150px]" />
         </div>
+      </TableCell>
+      <TableCell className="font-medium">
+        <Skeleton className="h-4 w-[110px]" />
       </TableCell>
       <TableCell className="text-right">
         <Skeleton className="h-[40px] w-full" />
