@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import { db } from "@/server/db";
 import { accounts, environments } from "@/server/db/schema";
+import { env } from "@/env";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,6 +17,12 @@ export default async function handler(
 
   if (!apiKey) {
     return res.status(401).json({ message: "Authorization header missing." });
+  }
+
+  if (apiKey !== env.API_KEY_SECRET) {
+    return res
+      .status(401)
+      .json({ message: "Authorization header is incorrect." });
   }
 
   const payloadSchema = z.object({
