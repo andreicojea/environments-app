@@ -19,7 +19,7 @@ export default async function handler(
     return res.status(401).json({ message: "Authorization header missing." });
   }
 
-  if (apiKey !== env.API_KEY_SECRET) {
+  if (apiKey !== `Bearer ${env.API_KEY_SECRET}`) {
     return res
       .status(401)
       .json({ message: "Authorization header is incorrect." });

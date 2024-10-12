@@ -27,6 +27,7 @@ export const env = createEnv({
     BITBUCKET_CLIENT_ID: z.string(),
     BITBUCKET_CLIENT_SECRET: z.string(),
     API_KEY_SECRET: z.string(),
+    CRON_SECRET: z.string(),
   },
 
   /**
@@ -52,6 +53,7 @@ export const env = createEnv({
     BITBUCKET_CLIENT_ID: process.env.BITBUCKET_CLIENT_ID,
     BITBUCKET_CLIENT_SECRET: process.env.BITBUCKET_CLIENT_SECRET,
     API_KEY_SECRET: process.env.API_KEY_SECRET,
+    CRON_SECRET: process.env.CRON_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
